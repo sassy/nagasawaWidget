@@ -1,17 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="./css/photon.min.css">
+  <style>
+  iframe {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .sidebar {
+    width: 140px;
+  }
+  </style>
+  <script type="text/javascript">
+  window.jQuery = window.$ = require('./js/jquery-3.1.1.js');
+  $(document).ready(function() {
+    $('.list-group-item').on('click', function(e) {
+      var url = $(e.target).attr('data-data');
+      console.log(url);
+      $('#player').attr('src', url);
+    });
+  });
+  </script>
 </head>
-<body>]
+<body>
   <div class="window">
     <div class="window-content">
-      <div class="pane-sm sidebar"></div>
+      <div class="pane-sm sidebar">
+        <ul class="list-group">
+          <li class="list-group-item active"
+            data-data="https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1">
+            Marina Nagasawa | 長澤茉里奈
+          </li>
+          <li class="list-group-item"
+            data-data="https://www.youtube.com/embed/tMGLmz_l2-4?autoplay=1&loop=1">
+            長澤茉里奈　動画
+          </li>
+          <li class="list-group-item"
+            data-data="https://www.youtube.com/embed/Vsl_pw0RKuM?autoplay=1&loop=1">
+            長澤茉里奈 その2
+          </li>
+        </ul>
+      </div>
       <div class="pane">
         <iframe
+          id="player"
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1"
+          src="https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1"
           frameborder="0" allowfullscreen></iframe>
       </div>
     </div>
