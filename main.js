@@ -6,6 +6,7 @@ function createWindow () {
   win = new BrowserWindow({width: 700, height: 335});
 
   win.loadURL(`file://${__dirname}/index.html`);
+  win.setAlwaysOnTop(true);
 
   //win.webContents.openDevTools()
 
