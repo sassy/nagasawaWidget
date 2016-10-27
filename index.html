@@ -18,9 +18,11 @@
   window.jQuery = window.$ = require('./js/jquery-3.1.1.js');
   $(document).ready(function() {
     $('.list-group-item').on('click', function(e) {
+      $('.list-group-item').removeClass('active');
       var url = $(e.target).attr('data-data');
       console.log(url);
       $('#player').attr('src', url);
+      $(e.target).addClass('active');
     });
   });
   </script>
