@@ -16,13 +16,30 @@
   </style>
   <script type="text/javascript">
   window.jQuery = window.$ = require('./js/jquery-3.1.1.js');
+  var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=PLgGoUn8TVUS8CEuk8d3n6z8DHP11UrKx-&key=AIzaSyA8jO-fb1xwYeO7DaX1JLWX7sdoZmyHKQI';
   $(document).ready(function() {
-    $('.list-group-item').on('click', function(e) {
-      $('.list-group-item').removeClass('active');
-      var url = $(e.target).attr('data-data');
-      console.log(url);
-      $('#player').attr('src', url);
-      $(e.target).addClass('active');
+    fetch(url).then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      console.log(json.items);
+      json.items.forEach(function(item) {
+        var url = 'https://www.youtube.com/embed/' +
+          item.snippet.resourceId.videoId +
+          '?autoplay=1&loop=1';
+        var listItem = $('<li>')
+            .addClass('list-group-item')
+            .attr('data-data', url)
+            .text(item.snippet.title);
+        listItem.on('click', function(e) {
+          $('.list-group-item').removeClass('active');
+          var url = $(e.target).attr('data-data');
+          console.log(url);
+          $('#player').attr('src', url);
+          $(e.target).addClass('active');
+        });
+        $('#play-list').append(listItem);
+      });
+      $('li').eq(0).addClass('active');
     });
   });
   </script>
@@ -31,19 +48,7 @@
   <div class="window">
     <div class="window-content">
       <div class="pane-sm sidebar">
-        <ul class="list-group">
-          <li class="list-group-item active"
-            data-data="https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1">
-            Marina Nagasawa | 長澤茉里奈
-          </li>
-          <li class="list-group-item"
-            data-data="https://www.youtube.com/embed/tMGLmz_l2-4?autoplay=1&loop=1">
-            長澤茉里奈　動画
-          </li>
-          <li class="list-group-item"
-            data-data="https://www.youtube.com/embed/Vsl_pw0RKuM?autoplay=1&loop=1">
-            長澤茉里奈 その2
-          </li>
+        <ul id="play-list" class="list-group">
         </ul>
       </div>
       <div class="pane">
