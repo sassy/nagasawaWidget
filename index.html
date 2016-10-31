@@ -16,8 +16,8 @@
   </style>
   <script type="text/javascript">
   window.jQuery = window.$ = require('./js/jquery-3.1.1.js');
-  var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=PLgGoUn8TVUS8CEuk8d3n6z8DHP11UrKx-&key=AIzaSyA8jO-fb1xwYeO7DaX1JLWX7sdoZmyHKQI';
-  $(document).ready(function() {
+
+  function buildHtml(url) {
     fetch(url).then(function(response) {
       return response.json();
     }).then(function(json) {
@@ -40,6 +40,14 @@
         $('#play-list').append(listItem);
       });
       $('li').eq(0).addClass('active');
+    });
+  }
+
+  $(document).ready(function() {
+    var ipcRenderer = require( 'electron' ).ipcRenderer;
+    ipcRenderer.send('getUrl', 'get');
+    ipcRenderer.on('responseMessage', function(e, url) {
+      buildHtml(url);
     });
   });
   </script>
