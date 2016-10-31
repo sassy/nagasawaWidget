@@ -5,23 +5,30 @@ function buildHtml(url) {
   fetch(url).then(function(response) {
     return response.json();
   }).then(function(json) {
-    console.log(json.items);
+    var items = [];
     json.items.forEach(function(item) {
-      var url = 'https://www.youtube.com/embed/' +
+      var data = {};
+      data.url = 'https://www.youtube.com/embed/' +
         item.snippet.resourceId.videoId +
         '?autoplay=1&loop=1';
-      var listItem = $('<li>')
-          .addClass('list-group-item')
-          .attr('data-data', url)
-          .text(item.snippet.title);
-      listItem.on('click', function(e) {
-        $('.list-group-item').removeClass('active');
-        var url = $(e.target).attr('data-data');
-        console.log(url);
-        $('#player').attr('src', url);
-        $(e.target).addClass('active');
-      });
-      $('#play-list').append(listItem);
+      data.title = item.snippet.title;
+      items.push(data);
+    });
+
+    var vue = new Vue({
+      el: '#play-list',
+      data: {
+        items: items
+      },
+      methods: {
+        clickHandler: function(event) {
+          $('.list-group-item').removeClass('active');
+          var url = $(event.target).attr('data-data');
+          console.log(url);
+          $('#player').attr('src', url);
+          $(event.target).addClass('active');
+        }
+      }
     });
     $('li').eq(0).addClass('active');
   });
