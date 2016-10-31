@@ -12,8 +12,11 @@ function buildHtml(url) {
         item.snippet.resourceId.videoId +
         '?autoplay=1&loop=1';
       data.title = item.snippet.title;
+      data.listClass = 'list-group-item';
+      data.isActive = false;
       items.push(data);
     });
+
 
     var vue = new Vue({
       el: '#play-list',
@@ -30,7 +33,8 @@ function buildHtml(url) {
         }
       }
     });
-    $('li').eq(0).addClass('active');
+
+    vue.items[0].isActive = true;
   });
 }
 
