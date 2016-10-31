@@ -2,13 +2,15 @@ const {app, BrowserWindow} = require('electron');
 const {ipcMain} = require('electron');
 
 const fs = require('fs');
+const path = require('path');
 
 let win;
 
 function createWindow () {
   win = new BrowserWindow({width: 700, height: 335});
+  const loadUrl =  path.join('file://', app.getAppPath(), 'renderer/index.html');
 
-  win.loadURL(`file://${__dirname}/index.html`);
+  win.loadURL(loadUrl);
   win.setAlwaysOnTop(true);
 
   //win.webContents.openDevTools()
@@ -33,7 +35,7 @@ app.on('activate', () => {
 });
 
 ipcMain.on('getUrl', (e, message) => {
-  const string = fs.readFileSync('./info.json', 'utf-8');
+  const string = fs.readFileSync('./main/info.json', 'utf-8');
   const json = JSON.parse(string);
   const url = 'https://www.googleapis.com/youtube/v3/' +
     'playlistItems?part=snippet' +
