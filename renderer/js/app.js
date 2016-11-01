@@ -1,5 +1,4 @@
-
-window.jQuery = window.$ = require('./js/jquery-3.1.1.js');
+'use strict';
 
 function buildHtml(url) {
   fetch(url).then(function(response) {
@@ -17,31 +16,38 @@ function buildHtml(url) {
       items.push(data);
     });
 
+    var contentVue = new Vue({
+      el: '#play-content',
+      data: {
+        src: 'https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1'
+      }
+    });
 
-    var vue = new Vue({
+    var listVue = new Vue({
       el: '#play-list',
       data: {
         items: items
       },
       methods: {
-        clickHandler: function(event) {
-          $('.list-group-item').removeClass('active');
-          var url = $(event.target).attr('data-data');
-          console.log(url);
-          $('#player').attr('src', url);
-          $(event.target).addClass('active');
+        clickHandler: function(index, event) {
+          var url = listVue.items[index].url;
+          contentVue.src = url;
+          this.items.forEach(function(item, i) {
+            item.isActive = i === index ? true : false;
+          });
         }
       }
     });
 
-    vue.items[0].isActive = true;
+    listVue.items[0].isActive = true;
+
   });
 }
 
-$(document).ready(function() {
-  var ipcRenderer = require( 'electron' ).ipcRenderer;
+window.onload = function() {
+  var ipcRenderer = require('electron').ipcRenderer;
   ipcRenderer.send('getUrl', 'get');
   ipcRenderer.on('responseMessage', function(e, url) {
     buildHtml(url);
   });
-});
+};

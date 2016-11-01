@@ -22,9 +22,9 @@
     <div class="window-content">
       <div class="pane-sm sidebar">
         <ul id="play-list" class="list-group">
-          <template v-for="item in items">
+          <template v-for="(item, index) in items">
             <li
-              v-on:click="clickHandler"
+              v-on:click="clickHandler(index)"
               v-bind:class="[item.listClass, {active : item.isActive}]"
               v-bind:data-data="item.url">
               {{ item.title }}
@@ -32,12 +32,12 @@
         </template>
         </ul>
       </div>
-      <div class="pane">
+      <div id="play-content" class="pane">
         <iframe
           id="player"
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1"
+          v-bind:src="src"
           frameborder="0" allowfullscreen></iframe>
       </div>
     </div>
