@@ -35,7 +35,8 @@ app.on('activate', () => {
 });
 
 ipcMain.on('getUrl', (e, message) => {
-  const string = fs.readFileSync('./main/info.json', 'utf-8');
+  const jsonPath = path.join(app.getAppPath(), 'main/info.json');
+  const string = fs.readFileSync(jsonPath, 'utf-8');
   const json = JSON.parse(string);
   const url = 'https://www.googleapis.com/youtube/v3/' +
     'playlistItems?part=snippet' +
