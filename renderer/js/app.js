@@ -1,36 +1,53 @@
-
-window.jQuery = window.$ = require('./js/jquery-3.1.1.js');
+'use strict';
 
 function buildHtml(url) {
   fetch(url).then(function(response) {
     return response.json();
   }).then(function(json) {
-    console.log(json.items);
+    var items = [];
     json.items.forEach(function(item) {
-      var url = 'https://www.youtube.com/embed/' +
+      var data = {};
+      data.url = 'https://www.youtube.com/embed/' +
         item.snippet.resourceId.videoId +
         '?autoplay=1&loop=1';
-      var listItem = $('<li>')
-          .addClass('list-group-item')
-          .attr('data-data', url)
-          .text(item.snippet.title);
-      listItem.on('click', function(e) {
-        $('.list-group-item').removeClass('active');
-        var url = $(e.target).attr('data-data');
-        console.log(url);
-        $('#player').attr('src', url);
-        $(e.target).addClass('active');
-      });
-      $('#play-list').append(listItem);
+      data.title = item.snippet.title;
+      data.listClass = 'list-group-item';
+      data.isActive = false;
+      items.push(data);
     });
-    $('li').eq(0).addClass('active');
+
+    var contentVue = new Vue({
+      el: '#play-content',
+      data: {
+        src: 'https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1'
+      }
+    });
+
+    var listVue = new Vue({
+      el: '#play-list',
+      data: {
+        items: items
+      },
+      methods: {
+        clickHandler: function(index, event) {
+          var url = listVue.items[index].url;
+          contentVue.src = url;
+          this.items.forEach(function(item, i) {
+            item.isActive = i === index ? true : false;
+          });
+        }
+      }
+    });
+
+    listVue.items[0].isActive = true;
+
   });
 }
 
-$(document).ready(function() {
-  var ipcRenderer = require( 'electron' ).ipcRenderer;
+window.onload = function() {
+  var ipcRenderer = require('electron').ipcRenderer;
   ipcRenderer.send('getUrl', 'get');
   ipcRenderer.on('responseMessage', function(e, url) {
     buildHtml(url);
   });
-});
+};
