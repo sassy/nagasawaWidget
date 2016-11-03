@@ -9,17 +9,19 @@ function buildHtml(url) {
       var data = {};
       data.url = 'https://www.youtube.com/embed/' +
         item.snippet.resourceId.videoId +
-        '?autoplay=1&loop=1';
+        '?autoplay=1&loop=1&controls=0';
       data.title = item.snippet.title;
       data.listClass = 'list-group-item';
       data.isActive = false;
       items.push(data);
     });
 
+
+
     var contentVue = new Vue({
       el: '#play-content',
       data: {
-        src: 'https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1'
+        src: 'https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1&controls=0'
       }
     });
 
