@@ -67,16 +67,17 @@ function buildHtml(url) {
       methods: {
         clickHandler: function(index, event) {
           this.store.dispatch(selectVideo(index));
-          const state = this.store.getState();
-          var url = state.datas[state.index].url;
-          contentVue.src = url;
-          this.$forceUpdate();
         }
       }
     });
-
+    listVue.store.subscribe(() => {
+      const state = listVue.store.getState();
+      var url = state.datas[state.index].url;
+      contentVue.src = url;
+      listVue.$forceUpdate();
+    });
     listVue.store.dispatch(selectVideo(0));
-    listVue.$forceUpdate();
+
 
   });
 }
