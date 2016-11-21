@@ -22,11 +22,10 @@
     <div class="window-content">
       <div class="pane-sm sidebar">
         <ul id="play-list" class="list-group">
-          <template v-for="(item, index) in items">
+          <template v-for="(item, index) in store.getState().datas">
             <li
               v-on:click="clickHandler(index)"
-              v-bind:class="[item.listClass, {active : item.isActive}]"
-              v-bind:data-data="item.url">
+              v-bind:class="[item.listClass, {active : item.isActive}]">
               {{ item.title }}
             </li>
         </template>

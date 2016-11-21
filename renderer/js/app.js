@@ -1,5 +1,41 @@
 'use strict';
 
+const { createStore } = require('redux');
+
+//ActionCreate
+function selectVideo(index) {
+  return {
+    type: 'SELECT_VIDEO',
+    index: index
+  };
+}
+
+//Reducer
+function videoState(state = {datas: [], index: 0}, action) {
+  switch(action.type) {
+  case 'SELECT_VIDEO':
+    const resetDatas = [
+      ...state.datas.slice(0, state.index),
+      Object.assign({}, state.datas[state.index], {
+        isActive: false
+      }),
+      ...state.datas.slice(state.index + 1)
+    ];
+    return Object.assign({}, state, {
+      index: action.index,
+      datas: [
+        ...resetDatas.slice(0, action.index),
+        Object.assign({}, resetDatas[action.index], {
+          isActive: true
+        }),
+        ...resetDatas.slice(action.index + 1)
+      ]
+    });
+  default:
+    return state;
+  }
+}
+
 function buildHtml(url) {
   fetch(url).then(function(response) {
     return response.json();
@@ -16,8 +52,6 @@ function buildHtml(url) {
       items.push(data);
     });
 
-
-
     var contentVue = new Vue({
       el: '#play-content',
       data: {
@@ -28,20 +62,21 @@ function buildHtml(url) {
     var listVue = new Vue({
       el: '#play-list',
       data: {
-        items: items
+        store: createStore(videoState, {index: 0,  datas: items})
       },
       methods: {
         clickHandler: function(index, event) {
-          var url = listVue.items[index].url;
+          this.store.dispatch(selectVideo(index));
+          const state = this.store.getState();
+          var url = state.datas[state.index].url;
           contentVue.src = url;
-          this.items.forEach(function(item, i) {
-            item.isActive = i === index ? true : false;
-          });
+          this.$forceUpdate();
         }
       }
     });
 
-    listVue.items[0].isActive = true;
+    listVue.store.dispatch(selectVideo(0));
+    listVue.$forceUpdate();
 
   });
 }
