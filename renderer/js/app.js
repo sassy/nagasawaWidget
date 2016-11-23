@@ -55,7 +55,29 @@ function buildHtml(url) {
     var contentVue = new Vue({
       el: '#play-content',
       data: {
-        src: 'https://www.youtube.com/embed/b8Bh7kprqOI?autoplay=1&loop=1&controls=0'
+        src: ''
+      }
+    });
+
+    var listItem = Vue.extend({
+      name: 'list-item',
+      template: '<li' +
+          '@click="clickHandler(index)"' +
+          'v-bind:class="[item.listClass, {active : item.isActive}]">' +
+          '{{ item.title }}' +
+        '</li>',
+      props: ['item', 'index', 'store'],
+      data: function() {
+        console.log(this);
+        return {
+          item: this.item,
+          index: this.index
+        };
+      },
+      methods: {
+        clickHandler: function(index, event) {
+          this.store.dispatch(selectVideo(index));
+        }
       }
     });
 
@@ -64,10 +86,8 @@ function buildHtml(url) {
       data: {
         store: createStore(videoState, {index: 0,  datas: items})
       },
-      methods: {
-        clickHandler: function(index, event) {
-          this.store.dispatch(selectVideo(index));
-        }
+      components: {
+        'list-item' : listItem
       }
     });
     listVue.store.subscribe(() => {
@@ -77,8 +97,6 @@ function buildHtml(url) {
       listVue.$forceUpdate();
     });
     listVue.store.dispatch(selectVideo(0));
-
-
   });
 }
 
