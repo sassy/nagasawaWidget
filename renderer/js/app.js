@@ -37,12 +37,12 @@ function videoState(state = {datas: [], index: 0}, action) {
 }
 
 function buildHtml(url) {
-  fetch(url).then(function(response) {
+  fetch(url).then((response) => {
     return response.json();
-  }).then(function(json) {
-    var items = [];
-    json.items.forEach(function(item) {
-      var data = {};
+  }).then((json) => {
+    let items = [];
+    json.items.forEach((item) => {
+      let data = {};
       data.url = 'https://www.youtube.com/embed/' +
         item.snippet.resourceId.videoId +
         '?autoplay=1&loop=1&controls=0';
@@ -52,14 +52,14 @@ function buildHtml(url) {
       items.push(data);
     });
 
-    var contentVue = new Vue({
+    const contentVue = new Vue({
       el: '#play-content',
       data: {
         src: ''
       }
     });
 
-    var listItem = Vue.extend({
+    const listItem = Vue.extend({
       name: 'list-item',
       template: '<li' +
           '@click="clickHandler(index)"' +
@@ -68,7 +68,6 @@ function buildHtml(url) {
         '</li>',
       props: ['item', 'index', 'store'],
       data: function() {
-        console.log(this);
         return {
           item: this.item,
           index: this.index
@@ -81,7 +80,7 @@ function buildHtml(url) {
       }
     });
 
-    var listVue = new Vue({
+    const listVue = new Vue({
       el: '#play-list',
       data: {
         store: createStore(videoState, {index: 0,  datas: items})
@@ -92,7 +91,7 @@ function buildHtml(url) {
     });
     listVue.store.subscribe(() => {
       const state = listVue.store.getState();
-      var url = state.datas[state.index].url;
+      const url = state.datas[state.index].url;
       contentVue.src = url;
       listVue.$forceUpdate();
     });
@@ -101,9 +100,9 @@ function buildHtml(url) {
 }
 
 window.onload = function() {
-  var ipcRenderer = require('electron').ipcRenderer;
+  const ipcRenderer = require('electron').ipcRenderer;
   ipcRenderer.send('getUrl', 'get');
-  ipcRenderer.on('responseMessage', function(e, url) {
+  ipcRenderer.on('responseMessage', (e, url) => {
     buildHtml(url);
   });
 };
