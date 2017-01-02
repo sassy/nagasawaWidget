@@ -40,6 +40,7 @@ ipcMain.on('getUrl', (e, message) => {
   const json = JSON.parse(string);
   const url = 'https://www.googleapis.com/youtube/v3/' +
     'playlistItems?part=snippet' +
+    '&maxResults=10' + 
     '&playlistId=' + json.playlistId +
     '&key=' + json.key;
 
