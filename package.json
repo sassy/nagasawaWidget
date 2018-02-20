@@ -12,13 +12,13 @@
   "license": "ISC",
   "dependencies": {
     "devtron": "^1.4.0",
-    "redux": "^3.6.0",
-    "vue": "^2.0.3"
+    "redux": "^3.7.2",
+    "vue": "^2.5.13"
   },
   "devDependencies": {
-    "electron": "^1.4.4",
-    "electron-packager": "^8.2.0",
-    "mocha": "^3.2.0",
-    "spectron": "^3.4.0"
+    "electron": "^1.8.2",
+    "electron-packager": "^8.7.2",
+    "mocha": "^3.5.3",
+    "spectron": "^3.8.0"
   }
 }
