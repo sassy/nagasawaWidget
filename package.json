@@ -16,7 +16,7 @@
     "vue": "^2.5.13"
   },
   "devDependencies": {
-    "electron": "^1.8.2",
+    "electron": "^2.0.5",
     "electron-packager": "^8.7.2",
     "mocha": "^3.5.3",
     "spectron": "^3.8.0"
