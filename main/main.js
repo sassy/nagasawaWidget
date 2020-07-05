@@ -7,7 +7,13 @@ const path = require('path');
 let win;
 
 function createWindow () {
-  win = new BrowserWindow({width: 700, height: 335});
+  win = new BrowserWindow({
+    width: 700,
+    height: 335,
+    webPreferences : {
+      nodeIntegration: true
+    }
+  });
   const loadUrl =  path.join('file://', app.getAppPath(), 'renderer/index.html');
 
   win.loadURL(loadUrl);
