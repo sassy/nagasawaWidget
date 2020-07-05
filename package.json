@@ -19,6 +19,6 @@
     "electron": "9.0.5",
     "electron-packager": "15.0.0",
     "mocha": "8.0.1",
-    "spectron": "3.8.0"
+    "spectron": "11.0.0"
   }
 }
