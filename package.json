@@ -5,7 +5,7 @@
   "main": "main/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . nagasawa --platform=darwin --arch=x64 --version=1.4.4 --icon=res/marina.icns",
+    "build": "electron-packager . nagasawa --platform=darwin --arch=x64 --icon=res/marina.icns",
     "test": "mocha test/test.js"
   },
   "author": "",
